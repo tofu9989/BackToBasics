@@ -29,7 +29,7 @@ class CalculatorTests(unittest.TestCase):
         self.assertEqual(json.loads(run.stdout), expected)
 
     def test_operators(self):
-        for op, expected in [("+", 10), ("-", 6), ("*", 16), ("/", 4)]:
+        for op, expected in [("+", 10), ("-", 6), ("*", 16), ("/", 4), ("%", 0)]:
             with self.subTest(op=op):
                 data = {"cal": {"op": op, "a": 8, "b": 2}, "result": -1}
                 run = self.run_input(json.dumps(data))
@@ -37,11 +37,17 @@ class CalculatorTests(unittest.TestCase):
                 data["result"] = expected
                 self.assertEqual(json.loads(run.stdout), data)
 
+    def test_fractional_remainder(self):
+        run = self.run_input('{"cal":{"op":"%","a":-7.5,"b":2}}')
+        self.assertEqual(run.returncode, 0, run.stderr)
+        self.assertEqual(json.loads(run.stdout)["result"], -1.5)
+
     def test_invalid_input(self):
         for data, error in [
             ('{"cal":{"op":"/","a":8,"b":0}}', "cannot divide by zero"),
             ('{"cal":{"op":"*","a":"8","b":2}}', "finite numbers"),
-            ('{"cal":{"op":"%","a":8,"b":2}}', "supported operators"),
+            ('{"cal":{"op":"%","a":8,"b":0}}', "zero divisor"),
+            ('{"cal":{"op":"^","a":8,"b":2}}', "supported operators"),
             ('{}', "cal must be a JSON object"),
             ('{} trailing', "Expected a JSON object"),
         ]:
