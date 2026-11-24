@@ -5,6 +5,16 @@
 
 #include "cJSON.h"
 
+static const char *calculate_remainder(double a, double b, double *result)
+{
+    if (b == 0) {
+        return "cannot calculate remainder with a zero divisor";
+    }
+
+    *result = fmod(a, b);
+    return NULL;
+}
+
 static const char *calculate(const cJSON *cal, double *result)
 {
     if (!cJSON_IsObject(cal)) {
@@ -35,8 +45,10 @@ static const char *calculate(const cJSON *cal, double *result)
         }
         *result = a / b;
         break;
+    case '%':
+        return calculate_remainder(a, b, result);
     default:
-        return "supported operators are +, -, *, /";
+        return "supported operators are +, -, *, /, %";
     }
 
     return isfinite(*result) ? NULL : "result is out of range";
