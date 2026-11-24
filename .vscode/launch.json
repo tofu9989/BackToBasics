@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug JSON calculator",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/json_cal.exe",
+            "args": ["data.json"],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": true,
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:/Strawberry/c/bin/gdb.exe",
+            "preLaunchTask": "Build JSON calculator"
+        }
+    ]
+}

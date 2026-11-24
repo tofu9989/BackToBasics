@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build JSON calculator",
+            "type": "process",
+            "command": "C:/Strawberry/c/bin/gcc.exe",
+            "args": [
+                "-std=c11", "-g", "-O0", "-Wall", "-Wextra",
+                "-Ithird_party/cjson",
+                "json_cal.c",
+                "third_party/cjson/cJSON.c",
+                "-o", "json_cal.exe"
+            ],
+            "options": { "cwd": "${workspaceFolder}" },
+            "problemMatcher": "$gcc"
+        }
+    ]
+}
